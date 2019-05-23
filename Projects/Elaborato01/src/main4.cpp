@@ -3,13 +3,13 @@
 #define TIM_USR_IRQ TIM2_IRQn
 
 /*
-    1Hz : PRE 9999, PER 9999
+    1Hz : PRE 8399, PER 9999
     100Hz : PRE 999, PER 999
     1KHz : PRE 99, PER 999
     10KHz : PRE 99, PER 99
 */
 
-#define PRESCALER 99
+#define PRESCALER 83
 #define PERIOD 99
 
 volatile char flag_time = 0;
@@ -30,6 +30,8 @@ int main() {
 
     AnalogIn input(A0);
 
+    Serial s(USBTX, USBRX, 921600);
+
     float measure;
 
     __HAL_RCC_TIM2_CLK_ENABLE();
@@ -46,11 +48,17 @@ int main() {
     NVIC_SetVector(TIM_USR_IRQ, (uint32_t)M_TIM_USR_Handler);
     NVIC_EnableIRQ(TIM_USR_IRQ);
 
+    uint32_t time = us_ticker_read();
+    uint32_t time2;
+    
     while(1) {
         if(flag_time == 1) {
             flag_time = 0;
             measure = input.read();
-            printf("%f\n",measure);
+            time2 = us_ticker_read();
+            s.printf("%.1f\n", 1.0/((time2-time)/1000000.0));
+            time = time2;
+            
         } 
     }
 }
