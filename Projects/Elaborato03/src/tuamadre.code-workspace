@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"name": "Encoder",
+			"path": "C:\\Users\\Silvio Donatoni\\Documents\\Projects\\Encoder"
+		}
+	],
+	"settings": {
+		"terminal.integrated.env.windows": {
+			"PATH": "C:\\Users\\Silvio Donatoni\\.platformio\\penv\\Scripts;C:\\Users\\Silvio Donatoni\\.platformio\\penv;C:\\ProgramData\\Oracle\\Java\\javapath;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files (x86)\\Common Files\\lenovo\\easyplussdk\\bin;C:\\Program Files\\Java\\jdk-9\\bin;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\MATLAB\\R2018b\\bin;C:\\Users\\Silvio Donatoni\\AppData\\Local\\Programs\\Python\\Python37-32;C:\\Users\\Silvio Donatoni\\AppData\\Local\\Microsoft\\WindowsApps;C:\\texlive\\2018\\bin\\win32;C:\\Users\\Silvio Donatoni\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\ProgramData\\Oracle\\Java\\javapath;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files (x86)\\Common Files\\lenovo\\easyplussdk\\bin;C:\\Program Files\\Java\\jdk-9\\bin;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\MATLAB\\R2018b\\bin;C:\\Users\\Silvio Donatoni\\AppData\\Local\\Programs\\Python\\Python37-32;C:\\Users\\Silvio Donatoni\\AppData\\Local\\Microsoft\\WindowsApps;C:\\texlive\\2018\\bin\\win32;C:\\Users\\Silvio Donatoni\\AppData\\Local\\Programs\\Microsoft VS Code\\bin",
+			"PLATFORMIO_CALLER": "vscode"
+		}
+	}
+}
