@@ -1,7 +1,32 @@
-#include <mbed.h>
-//#include "DigitalEncoderAB.h"
+#include "mbed.h"
+#include "DigitalEncoderAB.h"
 #include "DigitalEncoderAS5601.h"
-//#include "DigitalEncoderPIC.h"
+#include "DigitalEncoderPIC.h"
+
+float step1 = 360/42.0;
+float step2 = step1*2;
+float step3 = step1*3;
+float step4 = step1*4;
+float step5 = step1*5;
+float step6 = step1*6;
+
+
+int stepChange(float angle_sect){
+
+  if((angle_sect > 0.01f) && (angle_sect <= step1)){
+      return 5;
+    } else if (angle_sect > step1 && angle_sect <= step2){
+      return 6;
+    } else if (angle_sect > step2 && angle_sect <= step3){
+      return 1;
+    } else if (angle_sect > step3 && angle_sect <= step4){
+      return 2;
+    } else if (angle_sect > step4 && angle_sect <= step5){
+      return 3;
+    } else if (angle_sect > step5) {
+      return 4;
+    }
+}
 
 int main() {
 
@@ -23,14 +48,15 @@ int main() {
   DigitalOut enable_chip(PA_6);
   
   volatile char flag_time = 0;
-  float step = 360/42.0;
+  
+  float angle_section = 360/7.0;
 
   enable_chip.write(1);
 
-  float vel = 0.5f;
-  one_v.period(0.0001f);
-  two_v.period(0.0001f);
-  thr_v.period(0.0001f);
+  float vel = 0.8f;
+  one_v.period(0.00001f);
+  two_v.period(0.00001f);
+  thr_v.period(0.00001f);
 
   asm(".global _printf_float");
 
@@ -45,55 +71,70 @@ int main() {
 
     // read the angle
     angle_deg = encoder.getAngleDeg();
-    angle_rad = encoder.getAngleRad();
-    i=angle_deg - (((int)(angle_deg / 51.428f)) * 51.428f) ;
-    // pc.printf("%f, %f, %f\n",angle_deg,angle_rad, i);
+    float offset = pot.read()*360/7;
+    //offset = (float)((int)(offset * 100 + .5))/100;
+    float angle_sect=fmod(angle_deg+offset, angle_section) ;
+   // pc.printf("%f\n", angle_sect);
+    int flag_time = stepChange(angle_sect);
+    //pc.printf("%i\n",flag_time);
    
-    if(0<= i && i <step){
-      one_e.write(0);
-      two_e.write(1);
-      thr_e.write(1);
-      one_v.write(0);
-      two_v.write(vel);
-      thr_v.write(0);
-    } else if(step<= i && i <step*2){
-      one_e.write(1);
-      two_e.write(1);
-      thr_e.write(0);
-      one_v.write(0);
-      two_v.write(vel);
-      thr_v.write(0);
-    } else if(step*2<= i && i <step*3){
-      one_e.write(1);
-      two_e.write(0);
-      thr_e.write(1);
-      one_v.write(0);
-      two_v.write(0);
-      thr_v.write(vel);
-    } else if(step*3<= i && i <step*4){
-      one_e.write(0);
-      two_e.write(1);
-      thr_e.write(1);
-      one_v.write(0);
-      two_v.write(0);
-      thr_v.write(vel);
-    }else if(step*4<= i && i <step*5){
-      one_e.write(1);
-      two_e.write(1);
-      thr_e.write(0);
-      one_v.write(vel);
-      two_v.write(0);
-      thr_v.write(0);
-    }else if(step*5<= i && i <step*6){
-      one_e.write(1);
-      two_e.write(0);
-      thr_e.write(1);
-      one_v.write(vel);
-      two_v.write(0);
-      thr_v.write(0);
-    }
-
-    wait(0.001);
+    switch (flag_time) {
+      case 1:
+        one_e.write(0);
+        two_e.write(1);
+        thr_e.write(1);
+        one_v.write(0);
+        two_v.write(vel);
+        thr_v.write(0);
+        break;
+      case 2:
         
+        one_e.write(1);
+        two_e.write(1);
+        thr_e.write(0);
+        one_v.write(0);
+        two_v.write(vel);
+        thr_v.write(0);
+        break;
+      case 3:
+        
+        one_e.write(1);
+        two_e.write(0);
+        thr_e.write(1);
+        one_v.write(0);
+        two_v.write(0);
+        thr_v.write(vel);
+        break;
+      case 4:
+        
+        one_e.write(0);
+        two_e.write(1);
+        thr_e.write(1);
+        one_v.write(0);
+        two_v.write(0);
+        thr_v.write(vel);
+        break;
+      case 5:
+        
+        one_e.write(1);
+        two_e.write(1);
+        thr_e.write(0);
+        one_v.write(vel);
+        two_v.write(0);
+        thr_v.write(0);
+        break;
+      case 6:
+        
+        one_e.write(1);
+        two_e.write(0);
+        thr_e.write(1);
+        one_v.write(vel);
+        two_v.write(0);
+        thr_v.write(0);
+        break;
+
+    }
+    wait(0.0001);
   }
 }
+
